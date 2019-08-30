@@ -1,6 +1,7 @@
 {
   "name": "vis-network-polymer",
   "description": "Vis Network Polymer Element",
+  "version": "1",
   "main": "vis-network-polymer.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0"
