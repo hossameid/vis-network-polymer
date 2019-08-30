@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>vis-network-polymer demo</title>
+
+  <script>
+    // Force all polyfills on
+    if (window.customElements) window.customElements.forcePolyfill = true;
+    ShadyDOM = { force: true };
+    ShadyCSS = { shimcssproperties: true};
+  </script>
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../vis-network-polymer.html">
+  <script type="text/javascript" src="../visjs/vis-network.min.js"></script>
+
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic vis-network-polymer demo</h3>
+    <demo-snippet>
+      <template>
+        <vis-network-polymer></vis-network-polymer>     
+      </template>
+    </demo-snippet>
+  </div>
+  
+  <script>
+    var nodeData = [{ "id": 0, "label": "Organization", "group": "main", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 1, "label": "Department 1", "group": "icons", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 2, "label": "Department 2", "group": "icons", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 3, "label": "Unit 1", "group": "mints", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 4, "label": "Unit 2", "group": "mints", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 5, "label": "Unit 3", "group": "mints", "hidden": false, "labelHighlightBold": true, "physics": true }, { "id": 6, "label": "Unit 4", "group": "mints", "hidden": false, "labelHighlightBold": true, "physics": true }]
+      ;
+
+    // create an array with edges
+    var edgeData = [{"from":0,"to":1,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1},{"from":0,"to":2,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1},{"from":1,"to":3,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1},{"from":1,"to":4,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1},{"from":2,"to":5,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1},{"from":2,"to":6,"arrowStrikethrough":true,"dashes":false,"hidden":false,"hoverWidth":0.5,"labelHighlightBold":true,"physics":true,"selectionWidth":1,"width":1}]
+;
+
+    var optionData = {
+      physics: {
+        enabled: false,     // Stops node movement during display
+        stabilization: {    // Determines an initial layout; enabled by default
+          enabled: true,
+          iterations: 1000
+        }
+      },
+      nodes: { borderWidth: 2 },
+      interaction: { hover: true }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // this function runs when the DOM is ready, i.e. when the document has been parsed
+      var obj = document.getElementsByTagName('vis-network-polymer')[0];
+      obj.initialize(nodeData, edgeData, optionData);
+      obj.addNode({ id: 10, label: 'Node 6' });
+      obj.addEventListener("hoverNode", (e) => {
+        console.log("Object hoverNode handler", e);
+      });
+
+      obj.addEventListener("selectNode", () => {
+        console.log("Window selectNode handler");
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>

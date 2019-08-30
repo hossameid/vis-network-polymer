@@ -1,0 +1,211 @@
+<link rel="import" href="../polymer/polymer-element.html">
+ 
+<!-- Vis Network javascript and css-->
+<script type="text/javascript" src="./visjs/vis-network.min.js"></script>
+<link href="./visjs/vis-network.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="./fontawesome-free-5.10.2-web/css/fontawesome.min.css">
+<!--
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+-->
+<dom-module id="vis-network-polymer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #mynetwork {
+        width: 530px;
+        height: 600px;
+        border: 3px solid lightgray;
+      }
+    </style>
+    <div id="mynetwork"></div>
+  </template>
+
+  <script>
+    /**
+     * `vis-network-polymer`
+     * Vis Network Polymer Element
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class VisNetworkPolymer extends Polymer.Element {
+      static get is() { return 'vis-network-polymer'; }
+      static get properties() {
+        return {
+          options: {
+            type: Object,
+            observer: '_selectedChanged'
+          },
+          network: {
+            type: Object
+          },
+          _nodes: {
+            type: Object
+          },
+          _edges: {
+            type: Object
+          }
+        };
+      }
+
+      initializeDefault(nodeData, edgeData) {
+        var container = this.$.mynetwork;
+        var options = {};
+        this._nodes = new vis.DataSet(nodeData);
+        this._edges = new vis.DataSet(edgeData);
+        var data = {
+          nodes: nodeData,
+          edges: edgeData
+        };
+        this.network = new vis.Network(container, data, options);
+        this.initializeEventDispatcher(container);
+      }
+
+      initialize(nodeData, edgeData, optionData) {
+        var container = this.$.mynetwork;
+        this.options = { optionData };
+        this.options = optionData;
+        this._nodes = new vis.DataSet(nodeData);
+        this._edges = new vis.DataSet(edgeData);
+        var data = {
+          nodes: nodeData,
+          edges: edgeData
+        };
+        this.network = new vis.Network(container, data, optionData);
+        this.initializeEventDispatcher(container);
+      }
+
+
+
+      initializeEventDispatcher(container) {
+        this.network.on('selectNode', function (params) {
+          container.dispatchEvent(new CustomEvent('selectNode', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("click", function (params) {
+          container.dispatchEvent(new CustomEvent('click', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("doubleClick", function (params) {
+          container.dispatchEvent(new CustomEvent('doubleClick', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("oncontext", function (params) {
+          container.dispatchEvent(new CustomEvent('oncontext', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("dragStart", function (params) {
+          container.dispatchEvent(new CustomEvent('dragStart', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("dragging", function (params) {
+          container.dispatchEvent(new CustomEvent('dragging', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("dragEnd", function (params) {
+          container.dispatchEvent(new CustomEvent('dragEnd', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("controlNodeDragging", function (params) {
+          container.dispatchEvent(new CustomEvent('controlNodeDragging', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("controlNodeDragEnd", function (params) {
+          container.dispatchEvent(new CustomEvent('controlNodeDragEnd', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("zoom", function (params) {
+          container.dispatchEvent(new CustomEvent('zoom', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("showPopup", function (params) {
+          container.dispatchEvent(new CustomEvent('showPopup', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("hidePopup", function (params) {
+          container.dispatchEvent(new CustomEvent('hidePopup', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("select", function (params) {
+          container.dispatchEvent(new CustomEvent('select', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("selectEdge", function (params) {
+          container.dispatchEvent(new CustomEvent('selectEdge', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("deselectNode", function (params) {
+          container.dispatchEvent(new CustomEvent('deselectNode', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("hoverNode", function (params) {
+          container.dispatchEvent(new CustomEvent('hoverNode', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("blurNode", function (params) {
+          container.dispatchEvent(new CustomEvent('blurNode', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("blurEdge", function (params) {
+          container.dispatchEvent(new CustomEvent('blurEdge', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("startStabilizing", function (params) {
+          container.dispatchEvent(new CustomEvent('startStabilizing', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("stabilizationProgress", function (params) {
+          container.dispatchEvent(new CustomEvent('stabilizationProgress', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("stabilizationIterationsDone", function (params) {
+          container.dispatchEvent(new CustomEvent('stabilizationIterationsDone', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("stabilized", function (params) {
+          container.dispatchEvent(new CustomEvent('stabilized', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("initRedraw", function (params) {
+          container.dispatchEvent(new CustomEvent('initRedraw', { detail: params, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("beforeDrawing", function (ctx) {
+          container.dispatchEvent(new CustomEvent('beforeDrawing', { detail: ctx, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("afterDrawing", function (ctx) {
+          container.dispatchEvent(new CustomEvent('afterDrawing', { detail: ctx, composed: true, bubbles: false, currentTarget: this }));
+        });
+        this.network.on("afterDrawing", function (ctx) {
+          container.dispatchEvent(new CustomEvent('afterDrawing', { detail: ctx, composed: true, bubbles: false, currentTarget: this }));
+        });
+      }
+
+      redraw() {
+        var container = this.$.mynetwork;
+        var data = {
+          nodes: this._nodes,
+          edges: this._edges
+        };
+        this.network = new vis.Network(container, data, this.options);
+        this.initializeEventDispatcher(container);
+      }
+
+      addNode(node) {
+        this._nodes.add(node);
+      }
+
+      deleteNode(node) {
+        this._nodes.remove(node);
+      }
+
+      updateNode(node) {
+        this._nodes.update(node);
+      }
+
+      addEdge(edge) {
+        this._edges.add(edge);
+      }
+
+      removeEdge(edge) {
+        this._edges.remove(edge);
+      }
+
+      updateEdge(edge) {
+        this._edges.update(edge);
+      }
+
+      reinitOptions(optionData) {
+        this.options = optionData;
+      }
+
+      _selectedChanged() {
+        this.redraw();
+      }
+
+    }
+
+    window.customElements.define(VisNetworkPolymer.is, VisNetworkPolymer);
+  </script>
+</dom-module>
